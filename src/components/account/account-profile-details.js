@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -9,48 +9,70 @@ import {
   Grid,
   TextField
 } from '@mui/material';
+import Axios from 'axios';
+import domain from "../../utils/domain";
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+function AccountProfileDetails (props) {
 
-export const AccountProfileDetails = (props) => {
   const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
+    firstName: '',
+    lastName: '',
+    email: '',
     phone: '',
-    state: 'Alabama',
-    country: 'USA'
+    position: '',
+    pageReady: false,
+    disabled: true,
   });
+
+  useEffect(() => {
+    setValues({
+      ...values,
+      firstName: props.user.firstName,
+      lastName: props.user.lastName,
+      email: props.user.email,
+      phone: props.user.phone || "",
+      position: props.user.position || "",
+      pageReady: true,
+    });
+
+  }, []);
+
+  async function saveUser() {
+    const userData = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      phone: values.phone,
+      position: values.position,
+    }
+
+  let savedUser = await Axios.patch(`${domain}/user/`, userData);
+  console.log(savedUser);
+  }
+
+  function allowEdit() {
+    setValues({
+      ...values,
+      disabled : false,
+    });
+  }
 
   const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
     });
-  };
-
+  }
+  if(values.pageReady){
   return (
     <form
       autoComplete="off"
       noValidate
-      {...props}
+      onSubmit = {saveUser}
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
+          subheader="Update your profile."
           title="Profile"
         />
         <Divider />
@@ -73,6 +95,7 @@ export const AccountProfileDetails = (props) => {
                 required
                 value={values.firstName}
                 variant="outlined"
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -88,6 +111,7 @@ export const AccountProfileDetails = (props) => {
                 required
                 value={values.lastName}
                 variant="outlined"
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -103,6 +127,7 @@ export const AccountProfileDetails = (props) => {
                 required
                 value={values.email}
                 variant="outlined"
+                disabled
               />
             </Grid>
             <Grid
@@ -118,49 +143,26 @@ export const AccountProfileDetails = (props) => {
                 type="number"
                 value={values.phone}
                 variant="outlined"
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
+                label="Position"
+                name="position"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={values.position}
                 variant="outlined"
+                disabled = {values.disabled}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
+            
           </Grid>
         </CardContent>
         <Divider />
@@ -171,14 +173,40 @@ export const AccountProfileDetails = (props) => {
             p: 2
           }}
         >
+            <Grid
+              item
+              md={2}
+              xs={6}
+              align="right"
+            >
+          <Button
+            color="warning"
+            variant="contained"
+            onClick={allowEdit}
+          >
+            Edit Details
+          </Button>
+          </Grid>
+          <Grid
+              item
+              md={2}
+              xs={6}
+              align="right"
+            >
           <Button
             color="primary"
             variant="contained"
+            type="submit"
           >
-            Save details
+            Save Details
           </Button>
+          </Grid>
         </Box>
       </Card>
     </form>
   );
-};
+}
+else return null;
+}
+
+export default AccountProfileDetails;

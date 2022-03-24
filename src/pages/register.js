@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import Axios, * as others from "axios";
 import { useFormik } from 'formik';
+import domain from "../utils/domain";
 import * as Yup from 'yup';
 import {
   Box,
@@ -55,8 +57,29 @@ const Register = () => {
           'This field must be checked'
         )
     }),
-    onSubmit: () => {
-      router.push('/');
+       onSubmit: async () => {
+
+           const userData = {
+          firstName : formik.values.firstName,
+          lastName : formik.values.lastName,
+          email: formik.values.email,
+          password: formik.values.password,
+          passwordVerify: formik.values.password,
+          userSide: "vendor",
+        }
+
+    try {
+      let response = await Axios.post(`${domain}/user/`, userData)
+        console.log(response);
+        if(response.status == 200){
+          //do stuff
+        }
+      }
+    catch (error) {
+     // notify(error.response.data.errorMessage);
+     console.log(error);
+    }
+      //router.push('/');
     }
   });
 

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import NextLink from 'next/link';
 import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -68,6 +69,10 @@ export const DashboardNavbar = (props) => {
               </Badge>
             </IconButton>
           </Tooltip>
+          <NextLink
+              href="/account"
+              passHref
+            >
           <Avatar
             sx={{
               height: 40,
@@ -78,6 +83,7 @@ export const DashboardNavbar = (props) => {
           >
             <UserCircleIcon fontSize="small" />
           </Avatar>
+          </NextLink>
         </Toolbar>
       </DashboardNavbarRoot>
     </>

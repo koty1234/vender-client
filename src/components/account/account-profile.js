@@ -9,13 +9,12 @@ import {
   Typography
 } from '@mui/material';
 
+
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   city: 'Los Angeles',
-  country: 'USA',
   jobTitle: 'Senior Developer',
   name: 'Katarina Smith',
-  timezone: 'GTM-7'
 };
 
 export const AccountProfile = (props) => (
@@ -45,15 +44,15 @@ export const AccountProfile = (props) => (
         </Typography>
         <Typography
           color="textSecondary"
-          variant="body2"
+          variant="body1"
         >
-          {`${user.city} ${user.country}`}
+          {user.jobTitle}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {user.timezone}
+          {user.city}
         </Typography>
       </Box>
     </CardContent>

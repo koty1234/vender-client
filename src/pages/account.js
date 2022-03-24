@@ -1,16 +1,45 @@
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { AccountProfile } from '../components/account/account-profile';
-import { AccountProfileDetails } from '../components/account/account-profile-details';
+import { gtm } from '../components/lib/gtm';
+import AccountProfileDetails  from "../components/account/account-profile-details";
+import VendorProfileDetails from "../components/account/vendor-profile-details";
 import { DashboardLayout } from '../components/dashboard-layout';
+import Axios from 'axios';
+import domain from "../utils/domain";
 
-const Account = () => (
+const Account = () => {
+
+  const [values, setValues] = useState({
+    accountDetails: '',
+    pageReady: false,
+  });
+
+
+  useEffect(() => {
+    getUser();
+    gtm.push({ event: 'page_view' });
+  }, []);
+
+  async function getUser() {
+    let request = await Axios.get(`${domain}/user/`);
+    let userDetails = request.data;
+    setValues({
+      ...values,
+      accountDetails : userDetails,
+      pageReady: true
+    })
+  }
+
+  if(values.pageReady){
+  return(
   <>
     <Head>
       <title>
         Account | Material Kit
       </title>
     </Head>
+    <main>
     <Box
       component="main"
       sx={{
@@ -31,25 +60,23 @@ const Account = () => (
         >
           <Grid
             item
-            lg={4}
-            md={6}
+            lg={12}
+            md={12}
             xs={12}
           >
-            <AccountProfile />
           </Grid>
-          <Grid
-            item
-            lg={8}
-            md={6}
-            xs={12}
-          >
-            <AccountProfileDetails />
-          </Grid>
+          <AccountProfileDetails user={values.accountDetails}/>
+          <VendorProfileDetails user={values.accountDetails}/>
         </Grid>
       </Container>
     </Box>
+    </main>
   </>
 );
+
+}
+else return null;
+}
 
 Account.getLayout = (page) => (
   <DashboardLayout>
