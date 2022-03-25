@@ -402,7 +402,7 @@ function CreditAppDetails (props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => setValues({...values, hidden: true})}
+            onClick={() => setValues({...values, hidden: true, showCloseArrow: false, showOpenArrow: true})}
           >
             Close
           </Button>

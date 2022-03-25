@@ -21,39 +21,87 @@ function CustomCreditAppDetails (props) {
       hidden: true,
       showOpenArrow: true,
       showCloseArrow: false,
-      vendorId: props.vendor._id,
-      customCreditAppId: props.vendor.customCredAppId,
-      qOne: " ",
-      qTwo: "No Custom Question Set",
-      qThree: "No Custom Question Set",
-      qFour: "No Custom Question Set",
-      qFive: "No Custom Question Set",
-      qSix: "No Custom Question Set",
-      qSeven: "No Custom Question Set",
-      qEight: "No Custom Question Set",
-      qNine: "No Custom Question Set",
-      qTen: "No Custom Question Set",
-      qOneSetNew: "Change your 1st custom question here",
-      qTwoSetNew: "No Custom Question Set",
-      qThreeSetNew: "No Custom Question Set",
-      qFourSetNew: "No Custom Question Set",
-      qFiveSetNew: "No Custom Question Set",
-      qSixSetNew: "No Custom Question Set",
-      qSevenSetNew: "No Custom Question Set",
-      qEightSetNew: "No Custom Question Set",
-      qNineSetNew: "No Custom Question Set",
-      qTenSetNew: "No Custom Question Set",
+      qOne: '',
+      qTwo: '',
+      qThree: '',
+      qFour: '',
+      qFive: '',
+      qSix: '',
+      qSeven: '',
+      qEight: '',
+      qNine: '',
+      qTen: '',
+      tandc:'',
       disabled: true,
       pageReady: false,
   })
 
   useEffect(() => {
-  }, []);
+    fillData();
+  }, [props.customCredAppId]);
 
   function allowEdit() {
     setValues({
       ...values,
       disabled : false,
+    });
+  }
+
+async function fillData() {
+        if(!props.customCredAppId) return null;
+        let customCredAppData = await Axios.get(`${domain}/vendor/customcreditapp/${props.customCredAppId}`)
+        customCredAppData = customCredAppData.data;
+        setValues({
+            ...values,
+            qOne : customCredAppData.qOne || "",
+            qTwo : customCredAppData.qTwo|| "",
+            qThree : customCredAppData.qThree|| "",
+            qFour : customCredAppData.qFour|| "",
+            qFive : customCredAppData.qFive|| "",
+            qSix : customCredAppData.qSix|| "",
+            qSeven : customCredAppData.qSeven|| "",
+            qEight : customCredAppData.qEight|| "",
+            qNine : customCredAppData.qNine|| "",
+            qTen : customCredAppData.qTen|| "",
+            tandc : customCredAppData.tandc|| "",
+          });
+}
+
+async function submitData(e) {
+    e.preventDefault();
+    const customCredAppData = {
+        qOne: values.qOne,
+        qTwo: values.qTwo,
+        qThree: values.qThree,
+        qFour: values.qFour,
+        qFive: values.qFive,
+        qSix: values.qSix,
+        qSeven: values.qSeven,
+        qEight: values.qEight,
+        qNine: values.qNine,
+        qTen: values.qTen,
+        tandc:'asd',
+
+    }
+try {
+    let response = await Axios.patch(`${domain}/vendor/customcreditapp/${props.customCredAppId}`
+    , customCredAppData)
+  }
+catch (error) {
+  console.log(error.response);
+}
+
+setValues({
+    ...values, 
+    disabled: true,
+})
+
+}
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
     });
   }
 
@@ -90,6 +138,7 @@ function CustomCreditAppDetails (props) {
               setValues({...values, hidden: true,
                         showOpenArrow: true,
                         showCloseArrow: false,
+                        disabled: true,
                         })} 
               icon={faCircleXmark} 
               size="2x" 
@@ -121,9 +170,9 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label={values.qOne}
-                value={values.qOneSetNew}
-                required
+                value={values.qOne}
+                name="qOne"
+                onChange={handleChange}
                 variant="outlined"
                 disabled = {values.disabled}
               />
@@ -135,135 +184,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="Address"
-                required
+                value={values.qTwo}
+                name="qTwo"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="City"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="State"
-                variant="outlined"
-                required
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Postal Code"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Primary Phone Number"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="A/P Email Address"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="A/P Phone Number"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-              align="center"
-            >
-              <h3>Business History</h3>
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Type of Business"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Years in Business"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Revenue"
-                required
-                variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -273,10 +198,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="President Name"
-                required
+                value={values.qThree}
+                name="qThree"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -286,38 +212,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="President Email Address"
-                required
+                value={values.qFour}
+                name="qFour"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-              align="center"
-            >
-              <h3>Trade References</h3>
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <p>Reference #1</p>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Reference Company Name"
-                required
-                variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -327,10 +226,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="Reference Company Phone"
-                required
+                value={values.qFive}
+                name="qFive"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -340,10 +240,25 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="Contact Person"
-                required
+                value={values.qSix}
+                name="qSix"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
+                disabled = {values.disabled}
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+            <TextField
+                fullWidth
+                value={values.qSeven}
+                name="qSeven"
+                onChange={handleChange}
+                variant="outlined"
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -353,30 +268,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="Length of Relationship"
-                required
+                value={values.qEight}
+                name="qEight"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <p>Reference #2</p>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Reference Company Name"
-                required
-                variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -386,10 +282,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="Reference Company Phone"
-                required
+                value={values.qNine}
+                name="qNine"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -399,23 +296,11 @@ function CustomCreditAppDetails (props) {
             >
               <TextField
                 fullWidth
-                label="Contact Person"
-                required
+                value={values.qTen}
+                name="qTen"
+                onChange={handleChange}
                 variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Length of Relationship"
-                required
-                variant="outlined"
-                disabled
+                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -433,7 +318,7 @@ function CustomCreditAppDetails (props) {
             variant="contained"
             onClick={allowEdit}
           >
-            Edit Details
+            Edit Questions
           </Button>
           </Grid>
             <Grid
@@ -445,7 +330,7 @@ function CustomCreditAppDetails (props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => setValues({...values, hidden: true})}
+            onClick={submitData}
           >
             Save
           </Button>

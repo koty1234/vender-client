@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Typography, Button } from '@mui/material';
 import { gtm } from '../../components/lib/gtm';
 import CreditAppDetails  from "../../components/creditapp/credit-app-details";
 import CustomCreditAppDetails  from "../../components/creditapp/custom-credit-app-details";
@@ -13,18 +13,21 @@ function Account () {
 
   const [values, setValues] = useState({
     accountDetails: '',
-    vendorDetails: '',
-    vendorId: '',
+    customCredAppDefaultId: '',
+    customCredAppResidentialId: '',
+    customCredAppCommercialId: '',
+    currentCustomCredAppId: '',
+    defaultButton: 'text',
+    residentialButton: 'text',
+    commercialButton: 'text',
     pageReady: false,
   });
 
 
   useEffect(() => {
-    getVendor();
     gtm.push({ event: 'page_view' });
-  }, []);
-
-
+    getVendor();
+  },[values.currentCustomCredAppId]);
 
   async function getUser() {
     let request = await Axios.get(`${domain}/user/`);
@@ -38,7 +41,9 @@ function Account () {
     let vendorDetails = request.data;
     setValues({
       ...values,
-      vendorDetails : vendorDetails,
+      customCredAppDefaultId : vendorDetails.customCredAppId[0].Default,
+      customCredAppResidentialId : vendorDetails.customCredAppId[1].Residential,
+      customCredAppCommercialId : vendorDetails.customCredAppId[2].Commercial,
       accountDetails : userDetails,
       pageReady: true
     })
@@ -73,6 +78,62 @@ function Account () {
         >
           <Grid
             item
+            lg={2}
+            md={2}
+            xs={4}
+          >
+          <Button
+            color="primary"
+            variant={values.defaultButton}
+            onClick={() => setValues({...values, 
+              currentCustomCredAppId: values.customCredAppDefaultId, 
+              defaultButton: "contained", 
+              residentialButton: "text", 
+              commercialButton: "text"})}
+          >
+            Default
+            </Button>
+            </Grid>
+            <Grid
+            item
+            lg={2}
+            md={2}
+            xs={4}
+          >
+          <Button
+            color="primary"
+            variant={values.residentialButton}
+            onClick={() => setValues({...values, 
+              currentCustomCredAppId: values.customCredAppResidentialId,
+              defaultButton: "text", 
+              residentialButton: "contained", 
+              commercialButton: "text"
+            })}
+          >
+            Residental
+            </Button>
+            </Grid>
+            <Grid
+            item
+            lg={2}
+            md={2}
+            xs={4}
+          >
+          <Button
+            color="primary"
+            variant={values.commercialButton}
+            onClick={() => setValues({...values, 
+              currentCustomCredAppId: values.customCredAppCommercialId,
+              defaultButton: "text", 
+              residentialButton: "text", 
+              commercialButton: "contained",
+            })}
+          >
+            Commercial
+            </Button>
+            </Grid>
+          <Grid
+            item
             lg={12}
             md={12}
             xs={12}
@@ -85,7 +146,7 @@ function Account () {
             md={12}
             xs={12}
           >
-          <CustomCreditAppDetails user={values.accountDetails} vendor={values.vendorDetails}/>
+          <CustomCreditAppDetails user={values.accountDetails} customCredAppId={values.currentCustomCredAppId}/>
           </Grid>
           <Grid
             item
