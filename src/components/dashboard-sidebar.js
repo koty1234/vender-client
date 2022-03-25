@@ -28,9 +28,9 @@ const items = [
     title: 'Vendor Create'
   },
   {
-    href: '/products',
+    href: '/creditapp',
     icon: (<ShoppingBagIcon fontSize="small" />),
-    title: 'Products'
+    title: 'Credit Application'
   },
   {
     href: '/account',

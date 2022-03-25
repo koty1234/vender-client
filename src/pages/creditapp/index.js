@@ -1,31 +1,44 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { gtm } from '../components/lib/gtm';
-import AccountProfileDetails  from "../components/account/account-profile-details";
-import VendorProfileDetails from "../components/account/vendor-profile-details";
-import { DashboardLayout } from '../components/dashboard-layout';
+import { gtm } from '../../components/lib/gtm';
+import CreditAppDetails  from "../../components/creditapp/credit-app-details";
+import CustomCreditAppDetails  from "../../components/creditapp/custom-credit-app-details";
+import { DashboardLayout } from '../../components/dashboard-layout';
 import Axios from 'axios';
-import domain from "../utils/domain";
+import domain from "../../utils/domain";
+import TermsDetails from 'src/components/creditapp/terms-details';
 
-const Account = () => {
+function Account () {
 
   const [values, setValues] = useState({
     accountDetails: '',
+    vendorDetails: '',
+    vendorId: '',
     pageReady: false,
   });
 
 
   useEffect(() => {
-    getUser();
+    getVendor();
     gtm.push({ event: 'page_view' });
   }, []);
+
+
 
   async function getUser() {
     let request = await Axios.get(`${domain}/user/`);
     let userDetails = request.data;
+    return userDetails;
+  }
+
+  async function getVendor() {
+   let userDetails = await getUser();
+    let request = await Axios.get(`${domain}/vendor/${userDetails.vendorId}`);
+    let vendorDetails = request.data;
     setValues({
       ...values,
+      vendorDetails : vendorDetails,
       accountDetails : userDetails,
       pageReady: true
     })
@@ -52,7 +65,7 @@ const Account = () => {
           sx={{ mb: 3 }}
           variant="h3"
         >
-          Account
+          Credit App Builder
         </Typography>
         <Grid
           container
@@ -64,9 +77,24 @@ const Account = () => {
             md={12}
             xs={12}
           >
+            <CreditAppDetails user={values.accountDetails}/>
           </Grid>
-          <AccountProfileDetails user={values.accountDetails}/>
-          <VendorProfileDetails user={values.accountDetails}/>
+          <Grid
+            item
+            lg={12}
+            md={12}
+            xs={12}
+          >
+          <CustomCreditAppDetails user={values.accountDetails} vendor={values.vendorDetails}/>
+          </Grid>
+          <Grid
+            item
+            lg={12}
+            md={12}
+            xs={12}
+          >
+          <TermsDetails user={values.accountDetails}/>
+          </Grid>
         </Grid>
       </Container>
     </Box>
