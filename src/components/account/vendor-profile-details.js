@@ -21,7 +21,7 @@ function VendorProfileDetails (props) {
     postalCode: '',
     presidentName: '',
     yib:'',
-    businessPhone: '',
+    businessPhonee: '',
     businessEmail: '',
     website: '',
     vendorId: props.user.vendorId,

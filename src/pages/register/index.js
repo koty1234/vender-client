@@ -1,9 +1,11 @@
 import Head from 'next/head';
+import React, {useContext, useEffect, useState} from "react";
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import Axios, * as others from "axios";
 import { useFormik } from 'formik';
-import domain from "../utils/domain";
+import domain from "../../utils/domain";
+import UserContext from "../../context/user-context";
 import * as Yup from 'yup';
 import {
   Box,
@@ -18,7 +20,16 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Register = () => {
-  const router = useRouter();
+  const {user} = useContext(UserContext);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if(user){
+      router.push("/");
+    }
+    else setReady(true);
+  }, [user]);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -45,7 +56,17 @@ const Register = () => {
         .max(255)
         .required(
           'Last name is required'),
+      phoneNumber: Yup
+          .string()
+          .max(255)
+          .required(
+            'Phone number is required'),
       password: Yup
+        .string()
+        .max(255)
+        .required(
+          'Password is required'),
+      passwordVerify: Yup
         .string()
         .max(255)
         .required(
@@ -63,8 +84,9 @@ const Register = () => {
           firstName : formik.values.firstName,
           lastName : formik.values.lastName,
           email: formik.values.email,
+          phoneNumber: formik.values.phoneNumber,
           password: formik.values.password,
-          passwordVerify: formik.values.password,
+          passwordVerify: formik.values.passwordVerify,
           userSide: "vendor",
         }
 
@@ -76,13 +98,14 @@ const Register = () => {
         }
       }
     catch (error) {
-     // notify(error.response.data.errorMessage);
+      notify(error.response.data.errorMessage);
      console.log(error);
     }
-      //router.push('/');
+      router.push('/register/vendor');
     }
   });
 
+  if(!ready) return null;
   return (
     <>
       <Head>
@@ -165,6 +188,19 @@ const Register = () => {
               variant="outlined"
             />
             <TextField
+              error={Boolean(formik.touched.phone && formik.errors.phone)}
+              fullWidth
+              helperText={formik.touched.phone && formik.errors.phone}
+              label="Phone Number"
+              margin="normal"
+              name="phoneNumber"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="tel"
+              value={formik.values.phoneNumber}
+              variant="outlined"
+            />
+            <TextField
               error={Boolean(formik.touched.password && formik.errors.password)}
               fullWidth
               helperText={formik.touched.password && formik.errors.password}
@@ -175,6 +211,19 @@ const Register = () => {
               onChange={formik.handleChange}
               type="password"
               value={formik.values.password}
+              variant="outlined"
+            />
+            <TextField
+              error={Boolean(formik.touched.passwordVerify && formik.errors.passwordVerify)}
+              fullWidth
+              helperText={formik.touched.passwordVerify && formik.errors.passwordVerify}
+              label="Re-enter your password"
+              margin="normal"
+              name="passwordVerify"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="password"
+              value={formik.values.passwordVerify}
               variant="outlined"
             />
             <Box

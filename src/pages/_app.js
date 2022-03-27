@@ -6,7 +6,7 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { theme } from '../theme';
-import {UserContextProvider } from '../context/user-context';
+import {UserContextProvider} from '../context/user-context';
 import Axios, * as others from "axios";
 
 
@@ -17,6 +17,8 @@ const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   const getLayout = Component.getLayout ?? ((page) => page);
+
+  //UserContextProvider ensures a user is logged in
 
   return (
     <CacheProvider value={emotionCache}>
