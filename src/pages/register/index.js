@@ -6,6 +6,7 @@ import Axios, * as others from "axios";
 import { useFormik } from 'formik';
 import domain from "../../utils/domain";
 import UserContext from "../../context/user-context";
+import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import {
   Box,
@@ -22,6 +23,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const Register = () => {
   const {user} = useContext(UserContext);
   const [ready, setReady] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if(user){
