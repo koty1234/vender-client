@@ -23,7 +23,6 @@ function Account () {
     pageReady: false,
   });
 
-
   useEffect(() => {
     gtm.push({ event: 'page_view' });
     getVendor();
@@ -39,17 +38,26 @@ function Account () {
    let userDetails = await getUser();
     let request = await Axios.get(`${domain}/vendor/${userDetails.vendorId}`);
     let vendorDetails = request.data;
+    return (
     setValues({
       ...values,
       customCredAppDefaultId : vendorDetails.customCredAppId[0].Default,
       customCredAppResidentialId : vendorDetails.customCredAppId[1].Residential,
       customCredAppCommercialId : vendorDetails.customCredAppId[2].Commercial,
       accountDetails : userDetails,
-      pageReady: true
-    })
+      pageReady: true,
+    }));
   }
-
+  // only render if data is ready
   if(values.pageReady){
+    // if it's first render - show default cred app data
+    if(!values.currentCustomCredAppId){
+      setValues({
+        ...values,
+        currentCustomCredAppId : values.customCredAppDefaultId,
+        defaultButton : "contained",
+      })
+    }
   return(
   <>
     <Head>
@@ -78,9 +86,10 @@ function Account () {
         >
           <Grid
             item
-            lg={2}
-            md={2}
+            lg={1}
+            md={1}
             xs={4}
+            align="left"
           >
           <Button
             color="primary"
@@ -96,9 +105,11 @@ function Account () {
             </Grid>
             <Grid
             item
-            lg={2}
+            lg={1}
             md={2}
             xs={4}
+            align="left"
+            mr={2}
           >
           <Button
             color="primary"
@@ -115,9 +126,10 @@ function Account () {
             </Grid>
             <Grid
             item
-            lg={2}
+            lg={1}
             md={2}
             xs={4}
+            align="left"
           >
           <Button
             color="primary"
