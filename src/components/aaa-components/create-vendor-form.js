@@ -1,13 +1,14 @@
 import { Box, Button, Grid, TextField } from '@mui/material';
 import {React, useState} from 'react';
 import Axios, * as others from "axios";
+import { useRouter } from 'next/router';
 import domain from "../../utils/domain";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 function CreateVendorForm ({notify}) {
-
+  const router = useRouter();
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -33,12 +34,8 @@ function CreateVendorForm ({notify}) {
       businessEmail: businessEmail,
     }
 try {
-    let response = await Axios.post(`${domain}/vendor/`, vendorData)
-    if(response.status == 200){
-       let userData = {passedId : response.data._id}
-       let addId = await Axios.patch(`${domain}/user/attachid`, userData)
-       console.log(addId);
-    }
+    await Axios.post(`${domain}/vendor/`, vendorData)
+    router.push('/');
   }
 catch (error) {
   notify(error.response);
