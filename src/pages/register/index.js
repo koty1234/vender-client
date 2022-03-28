@@ -95,14 +95,13 @@ const Register = () => {
       let response = await Axios.post(`${domain}/user/`, userData)
         console.log(response);
         if(response.status == 200){
-          //do stuff
+          router.push('/register/vendor');
         }
       }
     catch (error) {
       notify(error.response.data.errorMessage);
      console.log(error);
     }
-      router.push('/register/vendor');
     }
   });
 
