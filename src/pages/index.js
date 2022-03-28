@@ -16,16 +16,7 @@ import UserContext from "../context/user-context";
 const Dashboard = () => {
   const router = useRouter();
   const {user} = useContext(UserContext);
-  const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    if(!user){
-      router.push("/register");
-    }
-    else setReady(true);
-  }, [user]);
- 
-  if (!ready) return null;
   return(
   <>
     <Head>
