@@ -29,7 +29,7 @@ const Register = () => {
       router.push("/");
     }
     else setReady(true);
-  }, [user]);
+  }, [user, router]);
 
   const formik = useFormik({
     initialValues: {
