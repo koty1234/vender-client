@@ -14,7 +14,6 @@ function UserContextProvider(props) {
     async function getUser() {
         const userRes = await Axios.get(`${domain}/user/isloggedin`);
         setUser(userRes.data);
-        console.log(userRes.data);
         if(!user) router.push('/register');
         setReady(true);
     }
