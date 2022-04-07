@@ -13,7 +13,7 @@ function UserContextProvider(props) {
 
     async function getUser() {
         const userRes = await Axios.get(`${domain}/user/isloggedin`);
-        setUser(userRes.data);
+        setUser(userRes.user);
         if(!user) router.push('/register');
         setReady(true);
     }

@@ -7,6 +7,8 @@ import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Facebook as FacebookIcon } from '../icons/facebook';
 import { Google as GoogleIcon } from '../icons/google';
+import Axios, * as others from "axios";
+import domain from "../utils/domain";
 
 const Login = () => {
   const router = useRouter();
@@ -29,10 +31,26 @@ const Login = () => {
         .required(
           'Password is required')
     }),
-    onSubmit: () => {
-      router.push('/');
-    }
-  });
+
+    onSubmit: async () => {
+
+      const loginData = {
+     email : formik.values.email,
+     password : formik.values.password,
+   }
+
+try {
+ let response = await Axios.post(`${domain}/user/login`, loginData);
+   if(response.status == 200){
+    router.push('/');
+   }
+ }
+catch (error) {
+  console.log(error);
+ notify(error.response.data.errorMessage);
+}
+}
+});
 
   return (
     <>
@@ -155,6 +173,7 @@ const Login = () => {
             />
             <Box sx={{ py: 2 }}>
               <Button
+
                 color="primary"
                 disabled={formik.isSubmitting}
                 fullWidth
