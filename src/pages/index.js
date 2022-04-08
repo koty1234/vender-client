@@ -2,21 +2,27 @@ import Head from 'next/head';
 import React, {useContext, useEffect, useState} from "react";
 import { Box, Container, Grid } from '@mui/material';
 import { Budget } from '../components/dashboard/budget';
-import { IncomingCreditApps } from '../components/dashboard/incoming-credit-apps';
 import { LatestProducts } from '../components/dashboard/latest-products';
 import { Sales } from '../components/dashboard/sales';
 import { TasksProgress } from '../components/dashboard/tasks-progress';
 import { TotalCustomers } from '../components/dashboard/total-customers';
 import { TotalProfit } from '../components/dashboard/total-profit';
 import { TrafficByDevice } from '../components/dashboard/traffic-by-device';
+import IncomingCreditApps  from '../components/dashboard/incoming-credit-apps';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { useRouter } from 'next/router';
+import { gtm } from '../components/lib/gtm';
 import UserContext from "../context/user-context";
 
-const Dashboard = () => {
+function Dashboard () {
   const router = useRouter();
   const {user} = useContext(UserContext);
 
+  const [values, setValues] = useState({
+    pageReady: true,
+  });
+
+  if(!values.pageReady) return null;
   return(
   <>
     <Head>
@@ -45,8 +51,6 @@ const Dashboard = () => {
           >
             <IncomingCreditApps />
           </Grid>
-
-
 
 
 

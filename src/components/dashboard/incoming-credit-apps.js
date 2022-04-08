@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import React, {useContext, useEffect, useState} from "react";
 import {
   Box,
   Button,
@@ -16,6 +17,31 @@ import {
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
+import Axios, * as others from "axios";
+import domain from "../../utils/domain";
+import UserContext from "../../context/user-context";
+
+function IncomingCreditApps (props) {
+
+const [values, setValues] = useState({
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  position: '',
+  pageReady: false,
+  disabled: true,
+});
+
+
+async function tester(){
+   let vendorId = "624d74197cb569ff4ecda450";
+let test = await Axios.get(`${domain}/masterapp/vendor/${vendorId}`,)
+console.log(test.data);
+}
+
+tester();
+
 
 const orders = [
   {
@@ -80,7 +106,7 @@ const orders = [
   }
 ];
 
-export const IncomingCreditApps = (props) => (
+return(
   <Card {...props}>
     <CardHeader title="Incoming Credit Applications" />
     <PerfectScrollbar>
@@ -178,3 +204,6 @@ export const IncomingCreditApps = (props) => (
     </Box>
   </Card>
 );
+}
+
+export default IncomingCreditApps;
