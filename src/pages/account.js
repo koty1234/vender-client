@@ -64,9 +64,16 @@ const Account = () => {
             md={12}
             xs={12}
           >
+                      <AccountProfileDetails user={values.accountDetails}/>
           </Grid>
-          <AccountProfileDetails user={values.accountDetails}/>
+          <Grid
+            item
+            lg={12}
+            md={12}
+            xs={12}
+          >
           <VendorProfileDetails user={values.accountDetails}/>
+          </Grid>
         </Grid>
       </Container>
     </Box>

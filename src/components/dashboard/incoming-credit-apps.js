@@ -40,8 +40,6 @@ let test = await Axios.get(`${domain}/masterapp/vendor/${vendorId}`,)
 console.log(test.data);
 }
 
-tester();
-
 
 const orders = [
   {

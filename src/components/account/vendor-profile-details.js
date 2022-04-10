@@ -9,6 +9,9 @@ import {
   Grid,
   TextField
 } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import {COLORS} from 'src/theme/colors';
 import Axios from 'axios';
 import domain from "../../utils/domain";
 
@@ -27,6 +30,9 @@ function VendorProfileDetails (props) {
     vendorId: props.user.vendorId,
     pageReady: false,
     disabled: true,
+    hidden: true,
+    showOpenArrow: true,
+    showCloseArrow: false,
   });
 
   useEffect(() => {
@@ -90,13 +96,54 @@ function VendorProfileDetails (props) {
       noValidate
       onSubmit = {saveVendor}
     >
-      <Card sx={{mt:10}}>
-        <CardHeader
-          subheader="Update your company"
-          title="Company"
-        />
+      <Card sx={{mt:2}}>
+      <Grid
+            container
+            spacing={3}
+          >
+              <Grid
+              item
+              md={9}
+              xs={9}
+              m={3}
+            >
+              <h3>Company</h3>
+              <p>Update your company details.</p>
+            </Grid>
+            <Grid
+              item
+              md={2}
+              xs={2}
+              mr={3}
+              mt={5}
+              align="right"
+            >
+              <div hidden={values.showOpenArrow}>
+              <FontAwesomeIcon onClick={() => 
+              setValues({...values, hidden: true,
+                        showOpenArrow: true,
+                        showCloseArrow: false,
+                        disabled: true,
+                        })} 
+              icon={faCircleXmark} 
+              size="2x" 
+              color={COLORS.closePlusButton}/>
+              </div>
+              <div hidden={values.showCloseArrow}>
+              <FontAwesomeIcon onClick={() =>
+               setValues({...values, hidden: false,
+                        showOpenArrow: false,
+                        showCloseArrow: true,
+                        })}
+              icon={faPlusCircle} 
+              size="2x" 
+              color={COLORS.expandPlusButton}/>
+              </div>
+            </Grid>
+              <Divider/>
+              </Grid>
         <Divider />
-        <CardContent>
+        <CardContent hidden={values.hidden}>
           <Grid
             container
             spacing={3}
@@ -260,19 +307,10 @@ function VendorProfileDetails (props) {
                 disabled = {values.disabled}
               />
             </Grid>
-          </Grid>
-        </CardContent>
         <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
-          }}
-        >
-            <Grid
+        <Grid
               item
-              md={2}
+              md={12}
               xs={6}
               align="right"
             >
@@ -280,25 +318,21 @@ function VendorProfileDetails (props) {
             color="warning"
             variant="contained"
             onClick={allowEdit}
+            sx={{mr:2}}
           >
             Edit Details
           </Button>
-          </Grid>
-          <Grid
-              item
-              md={2}
-              xs={6}
-              align="right"
-            >
           <Button
             color="primary"
             variant="contained"
             type="submit"
+            disabled = {values.disabled}
           >
             Save Details
           </Button>
           </Grid>
-        </Box>
+        </Grid>
+        </CardContent>
       </Card>
     </form>
   );
