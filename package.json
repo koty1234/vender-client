@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next -p 3000",
     "build": "next build",
-    "start": "npm start",
+    "start": "next start",
     "export": "next export",
     "lint": "next lint",
     "lint-fix": "next lint --fix"
