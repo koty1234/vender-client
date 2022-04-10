@@ -21,7 +21,18 @@ function TermsDetails (props) {
       hidden: true,
       showOpenArrow: true,
       showCloseArrow: false,
+      disabled: true,
   })
+
+  function flipValues() {
+    setValues({
+      ...values,
+      hidden:!values.hidden,
+      showCloseArrow: !values.showCloseArrow,
+      showOpenArrow: !values.showOpenArrow,
+      disabled: true,
+    })
+  }
 
   useEffect(() => {
   }, []);
@@ -35,6 +46,7 @@ function TermsDetails (props) {
       <Grid
             container
             spacing={3}
+            onClick={flipValues}
           >
               <Grid
               item
@@ -54,21 +66,13 @@ function TermsDetails (props) {
               align="right"
             >
               <div hidden={values.showOpenArrow}>
-              <FontAwesomeIcon onClick={() => 
-              setValues({...values, hidden: true,
-                        showOpenArrow: true,
-                        showCloseArrow: false,
-                        })} 
+              <FontAwesomeIcon onClick={flipValues} 
               icon={faCircleXmark} 
               size="2x" 
               color={COLORS.closePlusButton}/>
               </div>
               <div hidden={values.showCloseArrow}>
-              <FontAwesomeIcon onClick={() =>
-               setValues({...values, hidden: false,
-                        showOpenArrow: false,
-                        showCloseArrow: true,
-                        })}
+              <FontAwesomeIcon onClick={flipValues}
               icon={faPlusCircle} 
               size="2x" 
               color={COLORS.expandPlusButton}/>

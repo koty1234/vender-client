@@ -83,6 +83,16 @@ function VendorProfileDetails (props) {
     });
   }
 
+  function flipValues() {
+    setValues({
+      ...values,
+      hidden:!values.hidden,
+      showCloseArrow: !values.showCloseArrow,
+      showOpenArrow: !values.showOpenArrow,
+      disabled: true,
+    })
+  }
+
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -96,10 +106,11 @@ function VendorProfileDetails (props) {
       noValidate
       onSubmit = {saveVendor}
     >
-      <Card sx={{mt:2}}>
+      <Card>
       <Grid
             container
             spacing={3}
+            onClick={flipValues}
           >
               <Grid
               item
@@ -119,28 +130,18 @@ function VendorProfileDetails (props) {
               align="right"
             >
               <div hidden={values.showOpenArrow}>
-              <FontAwesomeIcon onClick={() => 
-              setValues({...values, hidden: true,
-                        showOpenArrow: true,
-                        showCloseArrow: false,
-                        disabled: true,
-                        })} 
+              <FontAwesomeIcon onClick={flipValues} 
               icon={faCircleXmark} 
               size="2x" 
               color={COLORS.closePlusButton}/>
               </div>
               <div hidden={values.showCloseArrow}>
-              <FontAwesomeIcon onClick={() =>
-               setValues({...values, hidden: false,
-                        showOpenArrow: false,
-                        showCloseArrow: true,
-                        })}
+              <FontAwesomeIcon onClick={flipValues}
               icon={faPlusCircle} 
               size="2x" 
               color={COLORS.expandPlusButton}/>
               </div>
             </Grid>
-              <Divider/>
               </Grid>
         <Divider />
         <CardContent hidden={values.hidden}>
