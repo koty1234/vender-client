@@ -27,6 +27,7 @@ function VendorProfileDetails (props) {
     businessPhonee: '',
     businessEmail: '',
     website: '',
+    file: '',
     vendorId: props.user.vendorId,
     pageReady: false,
     disabled: true,
@@ -40,7 +41,8 @@ function VendorProfileDetails (props) {
   }, []);
 
 
-  async function saveVendor() {
+  async function saveVendor(e) {
+    e.preventDefault();
     const vendorData = {
       companyName: values.companyName,
       address: values.address,
@@ -55,6 +57,7 @@ function VendorProfileDetails (props) {
     }
 
   await Axios.patch(`${domain}/vendor/${values.vendorId}`, vendorData);
+    savePicture();
   }
 
   async function getVendor() {
@@ -76,6 +79,15 @@ function VendorProfileDetails (props) {
     });
   }
 
+  async function savePicture() {
+    const fileDetails = new FormData();
+    fileDetails.append("uploadFile", values.file);
+    fileDetails.append("vendorId", values.vendorId);
+
+    let saveFile = await Axios.post(`${domain}/file`, fileDetails, { headers: {'Content-Type': 'multipart/form-data'}});
+    console.log(saveFile);
+  }
+
   function allowEdit() {
     setValues({
       ...values,
@@ -92,6 +104,14 @@ function VendorProfileDetails (props) {
       disabled: true,
     })
   }
+
+  const fileSelected = event => {
+    const file = event.target.files[0]
+		setValues({
+      ...values,
+      file: file,
+    });
+	}
 
   const handleChange = (event) => {
     setValues({
@@ -308,6 +328,14 @@ function VendorProfileDetails (props) {
                 disabled = {values.disabled}
               />
             </Grid>
+            <Grid
+            item
+            md={12}
+            xs={12}
+            >
+              <input onChange={fileSelected} type="file" accept="image/*"></input>
+              
+              </Grid>
         <Divider />
         <Grid
               item
