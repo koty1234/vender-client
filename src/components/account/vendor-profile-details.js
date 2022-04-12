@@ -7,8 +7,9 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  TextField,
 } from '@mui/material';
+import { FileDropzone } from '../aaa-components/file-dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {COLORS} from 'src/theme/colors';
@@ -16,6 +17,7 @@ import Axios from 'axios';
 import domain from "../../utils/domain";
 
 function VendorProfileDetails (props) {
+  const [files, setFiles] = useState([]);
   const [values, setValues] = useState({
     companyName: '',
     address: '',
@@ -27,7 +29,6 @@ function VendorProfileDetails (props) {
     businessPhonee: '',
     businessEmail: '',
     website: '',
-    file: '',
     vendorId: props.user.vendorId,
     pageReady: false,
     disabled: true,
@@ -105,13 +106,17 @@ function VendorProfileDetails (props) {
     })
   }
 
-  const fileSelected = event => {
-    const file = event.target.files[0]
-		setValues({
-      ...values,
-      file: file,
-    });
-	}
+  const handleDrop = (newFiles) => {
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleRemove = (file) => {
+    setFiles((prevFiles) => prevFiles.filter((_file) => _file.path !== file.path));
+  };
+
+  const handleRemoveAll = () => {
+    setFiles([]);
+  };
 
   const handleChange = (event) => {
     setValues({
@@ -333,7 +338,13 @@ function VendorProfileDetails (props) {
             md={12}
             xs={12}
             >
-              <input onChange={fileSelected} type="file" accept="image/*"></input>
+                <FileDropzone
+                accept="image/*"
+                files={files}
+                onDrop={handleDrop}
+                onRemove={handleRemove}
+                onRemoveAll={handleRemoveAll}
+              />
               
               </Grid>
         <Divider />
