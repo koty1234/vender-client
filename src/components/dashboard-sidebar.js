@@ -28,6 +28,11 @@ const items = [
     title: 'Credit Application'
   },
   {
+    href: '/contractor',
+    icon: (<UserIcon fontSize="small" />),
+    title: 'My Credit App'
+  },
+  {
     href: '/account',
     icon: (<UserIcon fontSize="small" />),
     title: 'Account'

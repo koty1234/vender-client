@@ -47,7 +47,7 @@ export const FileDropzone = (props) => {
     maxFiles,
     maxSize,
     minSize,
-    onDrop
+    onDrop,
   });
 
   return (
@@ -79,7 +79,7 @@ export const FileDropzone = (props) => {
         <Box
           sx={{
             '& img': {
-              width: 100
+              width: 50
             }
           }}
         >
@@ -89,7 +89,7 @@ export const FileDropzone = (props) => {
           />
         </Box>
         <Box sx={{ p: 2 }}>
-          <Typography variant="h6">
+          <Typography variant="p">
             Upload Your Company Logo
           </Typography>
         </Box>

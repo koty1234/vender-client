@@ -10,7 +10,7 @@ import {
   TextField
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
 import {COLORS} from 'src/theme/colors';
 import Axios from 'axios';
 import domain from "../../utils/domain";
@@ -24,7 +24,7 @@ function AccountProfileDetails (props) {
     phone: '',
     position: '',
     pageReady: false,
-    disabled: true,
+    disabled: false,
     hidden: true,
     showOpenArrow: true,
     showCloseArrow: false,
@@ -69,7 +69,6 @@ function AccountProfileDetails (props) {
       hidden:!values.hidden,
       showCloseArrow: !values.showCloseArrow,
       showOpenArrow: !values.showOpenArrow,
-      disabled: true,
     })
   }
 
@@ -106,7 +105,7 @@ function AccountProfileDetails (props) {
               md={2}
               xs={2}
               mr={3}
-              mt={5}
+              mt={4}
               align="right"
             >
               <div hidden={values.showOpenArrow}>
@@ -117,7 +116,7 @@ function AccountProfileDetails (props) {
               </div>
               <div hidden={values.showCloseArrow}>
               <FontAwesomeIcon onClick={flipValues}
-              icon={faPlusCircle} 
+              icon={faEdit} 
               size="2x" 
               color={COLORS.expandPlusButton}/>
               </div>
@@ -217,14 +216,6 @@ function AccountProfileDetails (props) {
               xs={6}
               align="right"
             >
-          <Button
-            color="warning"
-            variant="contained"
-            onClick={allowEdit}
-            sx={{mr:2}}
-          >
-            Edit Details
-          </Button>
           <Button
             color="primary"
             variant="contained"
