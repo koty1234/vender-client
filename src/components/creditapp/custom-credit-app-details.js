@@ -12,7 +12,7 @@ import {
 import Axios from 'axios';
 import domain from "../../utils/domain";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons'
 import {COLORS} from 'src/theme/colors';
 
 function CustomCreditAppDetails (props) {
@@ -32,7 +32,6 @@ function CustomCreditAppDetails (props) {
       qNine: '',
       qTen: '',
       tandc:'',
-      disabled: true,
       pageReady: false,
   })
 
@@ -40,20 +39,12 @@ function CustomCreditAppDetails (props) {
     fillData();
   }, [props.customCredAppId]);
 
-  function allowEdit() {
-    setValues({
-      ...values,
-      disabled : false,
-    });
-  }
-
   function flipValues() {
     setValues({
       ...values,
       hidden:!values.hidden,
       showCloseArrow: !values.showCloseArrow,
       showOpenArrow: !values.showOpenArrow,
-      disabled: true,
     })
   }
 
@@ -89,7 +80,6 @@ async function submitData(e) {
         qEight: values.qEight,
         qNine: values.qNine,
         qTen: values.qTen,
-        tandc:'asd',
 
     }
 try {
@@ -100,11 +90,7 @@ catch (error) {
   console.log(error.response);
 }
 
-setValues({
-    ...values, 
-    disabled: true,
-})
-
+flipValues();
 }
 
   const handleChange = (event) => {
@@ -140,7 +126,7 @@ setValues({
               md={2}
               xs={2}
               mr={3}
-              mt={5}
+              mt={4}
               align="right"
             >
               <div hidden={values.showOpenArrow}>
@@ -151,12 +137,11 @@ setValues({
               </div>
               <div hidden={values.showCloseArrow}>
               <FontAwesomeIcon onClick={flipValues}
-              icon={faPlusCircle} 
+              icon={faEdit} 
               size="2x" 
               color={COLORS.expandPlusButton}/>
               </div>
             </Grid>
-              <Divider/>
               </Grid>
         <Divider />
         <CardContent hidden={values.hidden}>
@@ -175,7 +160,6 @@ setValues({
                 name="qOne"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -189,7 +173,6 @@ setValues({
                 name="qTwo"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -203,7 +186,6 @@ setValues({
                 name="qThree"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -217,7 +199,6 @@ setValues({
                 name="qFour"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -231,7 +212,6 @@ setValues({
                 name="qFive"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
               />
             </Grid>
             <Grid
@@ -245,7 +225,7 @@ setValues({
                 name="qSix"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
+                disabled = {true}
               />
             </Grid>
             <Grid
@@ -259,7 +239,7 @@ setValues({
                 name="qSeven"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
+                disabled = {true}
               />
             </Grid>
             <Grid
@@ -273,7 +253,7 @@ setValues({
                 name="qEight"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
+                disabled = {true}
               />
             </Grid>
             <Grid
@@ -287,7 +267,7 @@ setValues({
                 name="qNine"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
+                disabled = {true}
               />
             </Grid>
             <Grid
@@ -301,30 +281,13 @@ setValues({
                 name="qTen"
                 onChange={handleChange}
                 variant="outlined"
-                disabled = {values.disabled}
+                disabled = {true}
               />
             </Grid>
-            <Grid
-            item
-            md={8}
-            xs={12}> </Grid>
+            <Divider />
             <Grid
               item
-              md={3}
-              xs={6}
-              align="right"
-            >
-          <Button
-            color="warning"
-            variant="contained"
-            onClick={allowEdit}
-          >
-            Edit Questions
-          </Button>
-          </Grid>
-            <Grid
-              item
-              md={1}
+              md={12}
               xs={6}
               align="right"
             >
@@ -333,7 +296,7 @@ setValues({
             variant="contained"
             onClick={submitData}
           >
-            Save
+            Save Details
           </Button>
           </Grid>
           </Grid>

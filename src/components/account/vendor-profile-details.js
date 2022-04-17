@@ -109,7 +109,6 @@ function VendorProfileDetails (props) {
 }
 
 async function bannerSelected (event) {
-  console.log("here");
   const file = event.target.files[0]
   const fileDetails = new FormData();
   fileDetails.append("vendorId", values.vendorId);

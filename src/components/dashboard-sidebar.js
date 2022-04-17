@@ -28,11 +28,6 @@ const items = [
     title: 'Credit Application'
   },
   {
-    href: '/contractor',
-    icon: (<UserIcon fontSize="small" />),
-    title: 'My Credit App'
-  },
-  {
     href: '/account',
     icon: (<UserIcon fontSize="small" />),
     title: 'Account'
@@ -41,11 +36,6 @@ const items = [
     href: '/settings',
     icon: (<CogIcon fontSize="small" />),
     title: 'Settings'
-  },
-  {
-    href: '/404',
-    icon: (<XCircleIcon fontSize="small" />),
-    title: 'Error'
   }
 ];
 

@@ -114,6 +114,7 @@ function Account () {
           <Button
             color="primary"
             variant={values.residentialButton}
+            disabled={true}
             onClick={() => setValues({...values, 
               currentCustomCredAppId: values.customCredAppResidentialId,
               defaultButton: "text", 
@@ -134,6 +135,7 @@ function Account () {
           <Button
             color="primary"
             variant={values.commercialButton}
+            disabled={true}
             onClick={() => setValues({...values, 
               currentCustomCredAppId: values.customCredAppCommercialId,
               defaultButton: "text", 
@@ -166,7 +168,7 @@ function Account () {
             md={12}
             xs={12}
           >
-          <TermsDetails user={values.accountDetails}/>
+          <TermsDetails user={values.accountDetails} customCredAppId={values.currentCustomCredAppId}/>
           </Grid>
         </Grid>
       </Container>

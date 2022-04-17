@@ -138,7 +138,6 @@ function AccountProfileDetails (props) {
                 helperText="Please specify the first name"
                 label="First name"
                 name="firstName"
-                onChange={handleChange}
                 required
                 value={values.firstName}
                 variant="outlined"
