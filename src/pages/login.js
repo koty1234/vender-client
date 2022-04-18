@@ -32,11 +32,11 @@ const Login = () => {
           'Password is required')
     }),
 
-    onSubmit: async () => {
+  onSubmit: async () => {
 
-      const loginData = {
-     email : formik.values.email,
-     password : formik.values.password,
+    const loginData = {
+    email : formik.values.email,
+    password : formik.values.password,
    }
 
 try {

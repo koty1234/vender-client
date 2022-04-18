@@ -4,7 +4,7 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
+  TextArea,
   Divider,
   Grid,
   TextField
@@ -12,13 +12,16 @@ import {
 import Axios from 'axios';
 import domain from "../../utils/domain";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons'
 import {COLORS} from 'src/theme/colors';
 
 function TermsDetails (props) {
 
   const [values, setValues] = useState({
+      tandc: "",
       hidden: true,
+      vendorId: props.user.vendorId,
+      customCredAppId: props.customCredAppId,
       showOpenArrow: true,
       showCloseArrow: false,
       disabled: true,
@@ -30,11 +33,35 @@ function TermsDetails (props) {
       hidden:!values.hidden,
       showCloseArrow: !values.showCloseArrow,
       showOpenArrow: !values.showOpenArrow,
-      disabled: true,
     })
   }
 
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  }
+
+  async function saveCustomCredApp() {
+    const vendorData = {
+      tandc: values.tandc,
+    }
+    await Axios.patch(`${domain}/vendor/customcreditapp/${values.customCredAppId}`, vendorData);
+    flipValues();
+  }
+
+  async function getCustomCredApp() {
+    let request = await Axios.get(`${domain}/vendor/customcreditapp/${values.customCredAppId}`);
+    setValues({
+      ...values,
+      tandc: request.data.tandc,
+    });
+
+  }
+
   useEffect(() => {
+    getCustomCredApp();
   }, []);
 
   return (
@@ -62,7 +89,7 @@ function TermsDetails (props) {
               md={2}
               xs={2}
               mr={3}
-              mt={5}
+              mt={4}
               align="right"
             >
               <div hidden={values.showOpenArrow}>
@@ -73,12 +100,11 @@ function TermsDetails (props) {
               </div>
               <div hidden={values.showCloseArrow}>
               <FontAwesomeIcon onClick={flipValues}
-              icon={faPlusCircle} 
+              icon={faEdit} 
               size="2x" 
               color={COLORS.expandPlusButton}/>
               </div>
             </Grid>
-              <Divider/>
               </Grid>
         <Divider />
         <CardContent hidden={values.hidden}>
@@ -90,325 +116,35 @@ function TermsDetails (props) {
               item
               md={12}
               xs={12}
-              align="center"
-            >
-              <h3>Company Info</h3>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
             >
               <TextField
                 fullWidth
-                label="Company Name"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Address"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="City"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="State"
-                variant="outlined"
-                required
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Postal Code"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Primary Phone Number"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="A/P Email Address"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="A/P Phone Number"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-              align="center"
-            >
-              <h3>Business History</h3>
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Type of Business"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Years in Business"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Revenue"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="President Name"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="President Email Address"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-              align="center"
-            >
-              <h3>Trade References</h3>
+                multiline
+                rows={30}
+                onChange={handleChange}
+                label="Terms and Conditions"
+                name="tandc"
+                value={values.tandc} />
             </Grid>
             <Grid
               item
               md={12}
               xs={12}
             >
-              <p>Reference #1</p>
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Reference Company Name"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Reference Company Phone"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Contact Person"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Length of Relationship"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
+            <Divider />
             <Grid
               item
               md={12}
-              xs={12}
-            >
-              <p>Reference #2</p>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Reference Company Name"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Reference Company Phone"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Contact Person"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Length of Relationship"
-                required
-                variant="outlined"
-                disabled
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
+              xs={6}
               align="right"
             >
           <Button
             color="primary"
             variant="contained"
-            onClick={() => setValues({...values, hidden: true})}
+            onClick={saveCustomCredApp}
           >
-            Close
+            Save Details
           </Button>
           </Grid>
           </Grid>

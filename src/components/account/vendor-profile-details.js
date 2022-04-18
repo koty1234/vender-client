@@ -7,15 +7,18 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  TextField,
 } from '@mui/material';
+import { FileDropzone } from '../aaa-components/file-dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {COLORS} from 'src/theme/colors';
 import Axios from 'axios';
 import domain from "../../utils/domain";
+import { useRouter } from 'next/router';
 
 function VendorProfileDetails (props) {
+  const router = useRouter();
   const [values, setValues] = useState({
     companyName: '',
     address: '',
@@ -27,9 +30,11 @@ function VendorProfileDetails (props) {
     businessPhonee: '',
     businessEmail: '',
     website: '',
+    logo: '',
+    banner: '',
     vendorId: props.user.vendorId,
     pageReady: false,
-    disabled: true,
+    disabled: false,
     hidden: true,
     showOpenArrow: true,
     showCloseArrow: false,
@@ -37,10 +42,10 @@ function VendorProfileDetails (props) {
 
   useEffect(() => {
     getVendor();
-  }, []);
+  }, [values.logo]);
 
 
-  async function saveVendor() {
+  async function saveVendor(e) {
     const vendorData = {
       companyName: values.companyName,
       address: values.address,
@@ -59,9 +64,13 @@ function VendorProfileDetails (props) {
 
   async function getVendor() {
     let request = await Axios.get(`${domain}/vendor/${values.vendorId}`);
+    let logo = await Axios.get(`${domain}/file/vendor/logo/${values.vendorId}`);
+    let banner = await Axios.get(`${domain}/file/vendor/banner/${values.vendorId}`);
     let vendor = request.data;
     setValues({
       ...values,
+      logo: logo.data.url,
+      banner: banner.data.url,
       companyName: vendor.companyName || "",
       address: vendor.address || "",
       city : vendor.city || "",
@@ -76,22 +85,42 @@ function VendorProfileDetails (props) {
     });
   }
 
-  function allowEdit() {
-    setValues({
-      ...values,
-      disabled : false,
-    });
-  }
-
   function flipValues() {
     setValues({
       ...values,
       hidden:!values.hidden,
       showCloseArrow: !values.showCloseArrow,
       showOpenArrow: !values.showOpenArrow,
-      disabled: true,
     })
   }
+
+  async function logoSelected (event) {
+    const file = event.target.files[0];
+    const fileDetails = new FormData();
+    fileDetails.append("vendorId", values.vendorId);
+    fileDetails.append("uploadFile", file);
+    fileDetails.append("type", "logo");
+    fileDetails.append("side", "vendor");
+    let savedFile = await Axios.post(`${domain}/file`, fileDetails, { headers: {'Content-Type': 'multipart/form-data'}});
+    setValues({
+      ...values,
+      logo: '',
+    })
+}
+
+async function bannerSelected (event) {
+  const file = event.target.files[0]
+  const fileDetails = new FormData();
+  fileDetails.append("vendorId", values.vendorId);
+  fileDetails.append("uploadFile", file);
+  fileDetails.append("type", "banner");
+  fileDetails.append("side", "vendor");
+  let savedFile = await Axios.post(`${domain}/file`, fileDetails, { headers: {'Content-Type': 'multipart/form-data'}});
+  setValues({
+    ...values,
+    logo: '',
+  })
+}
 
   const handleChange = (event) => {
     setValues({
@@ -126,7 +155,7 @@ function VendorProfileDetails (props) {
               md={2}
               xs={2}
               mr={3}
-              mt={5}
+              mt={4}
               align="right"
             >
               <div hidden={values.showOpenArrow}>
@@ -137,7 +166,7 @@ function VendorProfileDetails (props) {
               </div>
               <div hidden={values.showCloseArrow}>
               <FontAwesomeIcon onClick={flipValues}
-              icon={faPlusCircle} 
+              icon={faEdit} 
               size="2x" 
               color={COLORS.expandPlusButton}/>
               </div>
@@ -149,6 +178,112 @@ function VendorProfileDetails (props) {
             container
             spacing={3}
           >
+                        <Grid
+              item
+              md={3}
+              xs={12}
+            >
+              <h5>Logo</h5>
+            </Grid>
+            <Grid
+              item
+              md={9}
+              xs={12}
+            >
+              <h5>Banner</h5>
+            </Grid>
+                       <Grid
+            item
+            md={3}
+            xs={12}
+            >
+                      <div className="fileUploadButton">
+                      <label htmlFor="file-upload" className="file-upload">
+                      <Box
+                              sx={{
+                                backgroundColor: 'background.default',
+                                backgroundImage: `url(${values.logo})`,
+                                backgroundPosition: 'center',
+                                backgroundSize: 'contain',
+                                backgroundRepeat: "no-repeat",
+                                borderRadius: 1,
+                                padding: 1,
+                                display: 'flex',
+                                height: 200,
+                                justifyContent: 'right',
+                                overflow: 'hidden',
+                                '&:hover': {
+                                  backgroundColor: 'action.hover',
+                                  cursor: 'pointer',
+                                  opacity: 0.8
+                                }
+                              }}>
+                                                      <FontAwesomeIcon
+                        className="awesomeAboutPhoto"
+                        icon={faEdit}
+                        color="grey"
+                        size='1x'
+                      />
+                                </Box>
+                      </label>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/x-png, image/jpeg, image/jpg"
+                        onChange={logoSelected}
+                        style={{display: "none"}}
+                      />
+                    </div>                                
+              </Grid>
+              <Grid
+            item
+            md={9}
+            xs={12}
+            >
+                      <div className="bannerUploadButton">
+                      <label htmlFor="banner-upload" className="banner-upload">
+                      <Box
+                              sx={{
+                                backgroundColor: 'background.default',
+                                backgroundImage: `url(${values.banner})`,
+                                backgroundPosition: 'center',
+                                backgroundSize: 'contain',
+                                backgroundRepeat: "no-repeat",
+                                borderRadius: 1,
+                                padding: 1,
+                                display: 'flex',
+                                height: 200,
+                                justifyContent: 'right',
+                                overflow: 'hidden',
+                                '&:hover': {
+                                  backgroundColor: 'action.hover',
+                                  cursor: 'pointer',
+                                  opacity: 0.8
+                                }
+                              }}>
+                                                      <FontAwesomeIcon
+                        className="awesomeAboutPhoto"
+                        icon={faEdit}
+                        color="grey"
+                        size='1x'
+                      />
+                                </Box>
+                      </label>
+                      <input
+                        id="banner-upload"
+                        type="file"
+                        accept="image/x-png, image/jpeg, image/jpg"
+                        onChange={bannerSelected}
+                        style={{display: "none"}}
+                      />
+                    </div>                                
+              </Grid>
+              <Grid
+            item
+            md={9}
+            xs={5}
+            >
+              </Grid>
             <Grid
               item
               md={6}
@@ -156,7 +291,6 @@ function VendorProfileDetails (props) {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
                 label="Company Name"
                 name="companyName"
                 onChange={handleChange}
@@ -316,20 +450,11 @@ function VendorProfileDetails (props) {
               align="right"
             >
           <Button
-            color="warning"
-            variant="contained"
-            onClick={allowEdit}
-            sx={{mr:2}}
-          >
-            Edit Details
-          </Button>
-          <Button
             color="primary"
             variant="contained"
             type="submit"
-            disabled = {values.disabled}
           >
-            Save Details
+            Save
           </Button>
           </Grid>
         </Grid>

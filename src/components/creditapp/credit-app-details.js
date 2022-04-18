@@ -12,7 +12,7 @@ import {
 import Axios from 'axios';
 import domain from "../../utils/domain";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
 import {COLORS} from 'src/theme/colors';
 
 function CreditAppDetails (props) {
@@ -61,7 +61,7 @@ function CreditAppDetails (props) {
               md={2}
               xs={2}
               mr={3}
-              mt={5}
+              mt={4}
               align="right"
             >
               <div hidden={values.showOpenArrow}>
@@ -72,12 +72,11 @@ function CreditAppDetails (props) {
               </div>
               <div hidden={values.showCloseArrow}>
               <FontAwesomeIcon onClick={flipValues}
-              icon={faPlusCircle} 
+              icon={faEdit} 
               size="2x" 
               color={COLORS.expandPlusButton}/>
               </div>
             </Grid>
-              <Divider/>
               </Grid>
         <Divider />
         <CardContent hidden={values.hidden}>
