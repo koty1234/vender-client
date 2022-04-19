@@ -9,7 +9,6 @@ import {
   Grid,
   TextField,
 } from '@mui/material';
-import { FileDropzone } from '../aaa-components/file-dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {COLORS} from 'src/theme/colors';
