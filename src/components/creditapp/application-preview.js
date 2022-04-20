@@ -14,12 +14,15 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../scrollbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faCircleXmark, faClock, faDollarSign, faEdit, faPeopleGroup, faPlusCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAt, faBuilding, faCircleXmark, faClock, faDollarSign, faEdit, faIdBadge, faLocationDot, faPeopleGroup, faPerson, faPhone, faPlusCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import {COLORS} from 'src/theme/colors';
-import { padding } from '@mui/system';
+import { padding, style } from '@mui/system';
+import { ReferenceItem } from './reference-item';
 
 export const ApplicationPreview = (props) => {
   const { application, ...other } = props;
+
+  console.log(application);
 
   return (
     <Paper {...other}>
@@ -167,62 +170,15 @@ export const ApplicationPreview = (props) => {
               </Typography>
               </Grid>
               </Box>
-              <Box sx={{border:1, borderRadius:1, borderColor:"#F1F1F1", padding:1}}>
-              <Grid             
-              container
-              justifyContent="space-between">
-              <Grid item>
-              <Typography variant="h6">
-                {application.refArray[0].referenceName}
-                </Typography>
-                </Grid>
-                <Grid item>
-              <Typography variant="h6">
-                {application.refArray[0].referenceEmail}
-                </Typography>
-                </Grid>
-                <Grid item>
-              <Typography variant="h6">
-                {application.refArray[0].referencePhoneNumber}
-                </Typography>
-                </Grid>
-                </Grid>
-                <Grid container justifyContent="space-around" mt={2}>
-                <Grid item display="flex" alignItems="left" 
-                  sx={{backgroundColor:"green", 
-                  paddingX:3,
-                  paddingY:1,  
-                  borderRadius:1}}>
-                <Typography
-                  variant="body1"
-                >
-                {"10 Year Relationship"}
-                  </Typography>
-                  </Grid>
-                <Grid item display="flex" alignItems="left" 
-                  sx={{backgroundColor:"yellow", 
-                  paddingX:3,
-                  paddingY:1, 
-                  borderRadius:1}}>
-                <Typography
-                  variant="body1"
-                >
-                {"Sometimes pays on time"}
-                  </Typography>
-                  </Grid>
-                  <Grid item display="flex" alignItems="left" 
-                  sx={{backgroundColor:"red", 
-                  paddingX:3,
-                  paddingY:1, 
-                  borderRadius:1}}>
-                <Typography
-                  variant="body1"
-                >
-                {"Not Recommended"}
-                  </Typography>
-                  </Grid>
-                  </Grid>
-                </Box>
+              <Box sx={{border:1, borderRadius:1, borderColor:"#F1F1F1", padding:2, marginBottom:2}}>
+              <ReferenceItem reference={application.refArray[0]} />
+              </Box>
+              <Box sx={{border:1, borderRadius:1, borderColor:"#F1F1F1", padding:2, marginBottom:2}}>
+              <ReferenceItem reference={application.refArray[1]} />
+              </Box>
+              <Box sx={{border:1, borderRadius:1, borderColor:"#F1F1F1", padding:2, marginBottom:2}}>
+              <ReferenceItem reference={application.refArray[2]} />
+              </Box>
           </Box>
           </Scrollbar>
     </Paper>
