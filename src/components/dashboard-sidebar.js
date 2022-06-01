@@ -23,7 +23,7 @@ const items = [
     title: 'Dashboard'
   },
   {
-    href: '/creditapp',
+    href: '/creditappbuilder',
     icon: (<ShoppingBagIcon fontSize="small" />),
     title: 'Credit Application'
   },
